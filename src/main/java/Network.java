@@ -91,11 +91,11 @@ public class Network {
 
     private static void allPosts() throws SQLException {
         PreparedStatement st = null;
-        String query = "SELECT * FROM posts";
+        String query = "SELECT * FROM posts INNER JOIN usuarios on posts.id_usuario = usuarios.id";
         st = con.prepareStatement(query);
         ResultSet rs = st.executeQuery();
         while (rs.next()){
-            System.out.println(rs.getInt("id") + " - " + rs.getString("texto"));
+            System.out.println(rs.getInt("id") + " - " + rs.getString("texto") + " - " + rs.getString("nombre"));
         }
     }
 
@@ -120,12 +120,12 @@ public class Network {
         st.setInt(1, userID);
         ResultSet rs = st.executeQuery();
         while (rs.next()){
-            System.out.println(rs.getInt("id") + " - " + rs.getString("texto"));
+            System.out.println(rs.getInt("id") + " - " + rs.getString("texto") + " - " + userName);
         }
     }
     private static void otherPosts() throws SQLException {
         PreparedStatement st = null;
-        String query = "SELECT * FROM posts WHERE id_usuario != ?";
+        String query = "SELECT p.id, p.texto p.likes, p.fecha FROM posts p INNER JOIN users on posts.id_usuario = usuarios.id WHERE id_usuario != ?";
         st = con.prepareStatement(query);
         st.setInt(1, userID);
         ResultSet rs = st.executeQuery();
